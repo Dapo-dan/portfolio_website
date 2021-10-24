@@ -1,10 +1,22 @@
-import 'package:flutter/cupertino.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/material.dart';
 
-class LandingPage extends StatelessWidget {
+class LandingPage extends StatefulWidget {
   const LandingPage({Key? key}) : super(key: key);
 
   @override
+  State<LandingPage> createState() => _LandingPageState();
+}
+
+class _LandingPageState extends State<LandingPage> {
+  _launchURL(String url) async {
+    if(await canLaunch(url)){
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
@@ -48,24 +60,53 @@ class LandingPage extends StatelessWidget {
                 color: Colors.white,
               ),
             ),
+            const SizedBox(height: 20,),
             Row (
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget> [
-                Image.asset('assets/facebook.png', width: 20, height: 20,),
+                GestureDetector(
+                  onTap: (){
+                    _launchURL('https://www.facebook.com/profile.php?id=100008495197452');
+                  },
+                    child: Image.asset('assets/facebook.png', width: 20, height: 20,)
+                ),
                 const SizedBox(width: 12,),
-                Image.asset('assets/instagram.png', width: 20, height: 20,),
+                GestureDetector(
+                  onTap: (){
+                    _launchURL('https://www.instagram.com/dapo.lora/');
+                  },
+                    child: Image.asset('assets/instagram.png', width: 20, height: 20,)
+                ),
                 const SizedBox(width: 12,),
-                Image.asset('assets/meetup.png', width: 20, height: 20,),
-                const SizedBox(width: 12,),
-                Image.asset('assets/twitter.png', width: 20, height: 20,),
+                GestureDetector(
+                  onTap: (){
+                    _launchURL('https://twitter.com/dapo_lora?s=09');
+                  },
+                    child: Image.asset('assets/twitter.png', width: 20, height: 20,)
+                ),
               ],
             ),
-            const SizedBox(width: 20,),
-            const Text ('Download my resume',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 17,
-                fontWeight: FontWeight.w300,
-                color: Colors.white,
+            const SizedBox(height: 20,),
+            GestureDetector(
+              onTap: (){
+                _launchURL('https://www.linkedin.com/in/oladapodanielolatubosun/');
+              },
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 20,),
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(50)),
+                  gradient: LinearGradient(
+                    colors: [Color(0xffdd5e89), Color(0xfff7bb97)]
+                  )
+                ),
+                child: const Text ('Download my resume',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.w300,
+                    color: Colors.black87,
+                  ),
+                ),
               ),
             ),
           ],
